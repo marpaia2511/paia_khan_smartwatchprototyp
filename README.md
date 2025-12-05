@@ -23,6 +23,8 @@ Jeder Eintrag zeigt:
 - Farblich markierten Status
 - Aktuellen Messwert
 
+Bei auslösen der Notfallfunktion wird automatisch ein Warnsignal ausgegeben und man hat 10 sek Zeit den Alarm wieder zu deaktivieren. Dadurch können die Anzahl an fehlermeldungen vermieden werden.
+
 ### Detailseite für Vitaldaten
 
 Beim Anklicken eines Vitalwerts öffnet sich eine Detailseite mit:
