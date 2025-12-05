@@ -87,7 +87,7 @@ export function SOSApp() {
       <div className="relative">
         {/* WATCH FRAME */}
         <div className="w-[500px] h-[500px] bg-gradient-to-br from-slate-700 to-slate-800 rounded-[50px] p-8 shadow-2xl border-8 border-slate-600">
-          
+
           {/* WATCH SCREEN */}
           <div className="w-full h-full bg-gradient-to-br from-slate-950 to-black rounded-[40px] overflow-hidden relative shadow-inner">
 
@@ -151,10 +151,10 @@ export function SOSApp() {
             {/* EMERGENCY LIST PAGE */}
             {currentPage === 'emergency-list' && (
               <div className="h-full flex flex-col">
-                
+
                 {/* HEADER */}
                 <div className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-5 flex items-center justify-between shadow-lg">
-                  
+
                   <button
                     onClick={() => setCurrentPage('landing')}
                     className="text-white hover:bg-red-700/50 px-3 py-2 rounded-lg transition-colors"
@@ -214,7 +214,7 @@ export function SOSApp() {
             {/* VITAL DETAIL PAGE */}
             {currentPage === 'vital-detail' && selectedVital && (
               <div className="h-full flex flex-col">
-                
+
                 {/* HEADER */}
                 <div className={`${vitalDetails[selectedVital].color} px-6 py-5 flex items-center justify-between shadow-lg`}>
                   <button
