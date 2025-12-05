@@ -1,0 +1,292 @@
+import { useState } from 'react';
+import { Heart, Wind } from 'lucide-react';
+
+type Page = 'landing' | 'emergency-list' | 'vital-detail';
+type VitalType = 'heart' | 'oxygen' | 'blood-pressure' | 'temperature';
+
+export function SOSApp() {
+  const [currentPage, setCurrentPage] = useState<Page>('landing');
+  const [showSharedMessage, setShowSharedMessage] = useState(false);
+  const [selectedVital, setSelectedVital] = useState<VitalType | null>(null);
+
+  const handleShareVitalData = () => {
+    setShowSharedMessage(true);
+    setTimeout(() => setShowSharedMessage(false), 2000);
+  };
+
+  const handleVitalClick = (vital: VitalType) => {
+    setSelectedVital(vital);
+    setCurrentPage('vital-detail');
+  };
+
+  const emergencies = [
+    { name: 'Sauerstoff', value: '98%', color: 'bg-green-500', status: 'normal' },
+    { name: 'Herzfrequenz', value: '142 bpm', color: 'bg-red-500', status: 'kritisch' },
+    { name: 'Blutdruck', value: '160/95', color: 'bg-orange-500', status: 'erhöht' },
+    { name: 'Temperatur', value: '36.8°C', color: 'bg-blue-500', status: 'normal' },
+    { name: 'Blutzucker', value: '95 mg/dL', color: 'bg-green-500', status: 'normal' },
+  ];
+
+  const vitalDetails = {
+    heart: {
+      name: 'Herzfrequenz',
+      value: '142',
+      unit: 'bpm',
+      color: 'bg-red-500',
+      graphData: [72, 78, 82, 90, 105, 125, 135, 142, 140, 138, 145, 142, 140, 135, 130],
+      info: [
+        { label: 'Status', value: 'Erhöht' },
+        { label: 'Normal', value: '60-100 bpm' },
+        { label: 'Trend', value: '↑ Steigend' },
+        { label: 'Letzte', value: 'vor 2 Min' },
+      ],
+    },
+    oxygen: {
+      name: 'Sauerstoff',
+      value: '98',
+      unit: '%',
+      color: 'bg-green-500',
+      graphData: [95, 96, 97, 98, 99, 98, 98, 97, 98, 98, 98, 97, 98],
+      info: [
+        { label: 'Status', value: 'Normal' },
+        { label: 'Normal', value: '95-100%' },
+        { label: 'Trend', value: '→ Stabil' },
+        { label: 'Letzte', value: 'vor 1 Min' },
+      ],
+    },
+    'blood-pressure': {
+      name: 'Blutdruck',
+      value: '160/95',
+      unit: 'mmHg',
+      color: 'bg-orange-500',
+      graphData: [120, 125, 130, 140, 150, 155, 158, 160, 160, 162, 160],
+      info: [
+        { label: 'Status', value: 'Erhöht' },
+        { label: 'Normal', value: '120/80' },
+        { label: 'Trend', value: '↑ Steigend' },
+        { label: 'Letzte', value: 'vor 3 Min' },
+      ],
+    },
+    temperature: {
+      name: 'Temperatur',
+      value: '36.8',
+      unit: '°C',
+      color: 'bg-blue-500',
+      graphData: [36.5, 36.6, 36.7, 36.8, 36.8, 36.9, 36.8, 36.8, 36.7],
+      info: [
+        { label: 'Status', value: 'Normal' },
+        { label: 'Normal', value: '36.5-37.5°C' },
+        { label: 'Trend', value: '→ Stabil' },
+        { label: 'Letzte', value: 'vor 5 Min' },
+      ],
+    },
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-8">
+      <div className="relative">
+        {/* WATCH FRAME */}
+        <div className="w-[500px] h-[500px] bg-gradient-to-br from-slate-700 to-slate-800 rounded-[50px] p-8 shadow-2xl border-8 border-slate-600">
+
+          {/* WATCH SCREEN */}
+          <div className="w-full h-full bg-gradient-to-br from-slate-950 to-black rounded-[40px] overflow-hidden relative shadow-inner">
+
+            {/* LANDING PAGE */}
+            {currentPage === 'landing' && (
+              <div className="h-full flex flex-col p-6">
+
+                {/* TITLE */}
+                <div className="text-center mb-6 pt-1">
+                  <h1 className="text-red-500 text-5xl tracking-wider drop-shadow-lg">Notfall</h1>
+                  <div className="w-20 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent mx-auto mt-2"></div>
+                </div>
+
+                {/* SHARE BUTTON */}
+                <button
+                  onClick={handleShareVitalData}
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 rounded-xl transition-all shadow-lg text-base mb-3"
+                >
+                  Vitaldaten teilen
+                </button>
+
+                {showSharedMessage && (
+                  <div className="mt-2 text-center text-green-400 bg-green-950/50 py-2 rounded-xl border border-green-700 animate-pulse">
+                    ✓ Vitaldaten geteilt
+                  </div>
+                )}
+
+                {/* SOS BUTTON */}
+                <button
+                  onClick={() => setCurrentPage('emergency-list')}
+                  className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-4 rounded-xl transition-all shadow-lg text-xl tracking-wide mb-6"
+                >
+                  SOS
+                </button>
+
+                {/* VITAL BUTTONS */}
+                <div className="grid grid-cols-2 gap-3 mt-1">
+                  <button
+                    onClick={() => handleVitalClick('heart')}
+                    className="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-red-500/50 rounded-2xl p-4 flex flex-col items-center shadow-lg"
+                  >
+                    <Heart className="w-10 h-10 text-red-500 mb-2" />
+                    <div className="text-white text-sm">Herzfrequenz</div>
+                    <div className="text-red-400 text-2xl mt-1">142</div>
+                    <div className="text-slate-400 text-xs">bpm</div>
+                  </button>
+
+                  <button
+                    onClick={() => handleVitalClick('oxygen')}
+                    className="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-green-500/50 rounded-2xl p-4 flex flex-col items-center shadow-lg"
+                  >
+                    <Wind className="w-10 h-10 text-green-500 mb-2" />
+                    <div className="text-white text-sm">Sauerstoff</div>
+                    <div className="text-green-400 text-2xl mt-1">98</div>
+                    <div className="text-slate-400 text-xs">%</div>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* EMERGENCY LIST PAGE */}
+            {currentPage === 'emergency-list' && (
+              <div className="h-full flex flex-col">
+
+                {/* HEADER */}
+                <div className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-5 flex items-center justify-between shadow-lg">
+
+                  <button
+                    onClick={() => setCurrentPage('landing')}
+                    className="text-white hover:bg-red-700/50 px-3 py-2 rounded-lg transition-colors"
+                  >
+                    ← Zurück
+                  </button>
+
+                  <h2 className="text-white text-lg">Notfall-Status</h2>
+
+                  {/* spacer to keep center alignment */}
+                  <div className="w-6"></div>
+                </div>
+
+                {/* LIST */}
+                <div className="flex-1 overflow-y-auto px-6 py-5">
+                  <div className="space-y-4">
+                    {emergencies.map((emergency, idx) => (
+                      <div
+                        key={idx}
+                        className="bg-gradient-to-r from-slate-800 to-slate-900 border-l-4 rounded-2xl p-5 flex items-center justify-between shadow-lg"
+                        style={{
+                          borderLeftColor:
+                            emergency.color === 'bg-green-500'
+                              ? '#22c55e'
+                              : emergency.color === 'bg-red-500'
+                              ? '#ef4444'
+                              : emergency.color === 'bg-orange-500'
+                              ? '#f97316'
+                              : '#3b82f6',
+                        }}
+                      >
+                        <div>
+                          <div className="text-white text-lg">{emergency.name}</div>
+                          <div className="text-slate-400 text-sm mt-1">{emergency.status}</div>
+                        </div>
+
+                        <div
+                          className={`text-3xl ${
+                            emergency.color === 'bg-green-500'
+                              ? 'text-green-400'
+                              : emergency.color === 'bg-red-500'
+                              ? 'text-red-400'
+                              : emergency.color === 'bg-orange-500'
+                              ? 'text-orange-400'
+                              : 'text-blue-400'
+                          }`}
+                        >
+                          {emergency.value}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* VITAL DETAIL PAGE */}
+            {currentPage === 'vital-detail' && selectedVital && (
+              <div className="h-full flex flex-col">
+
+                {/* HEADER */}
+                <div className={`${vitalDetails[selectedVital].color} px-6 py-5 flex items-center justify-between shadow-lg`}>
+                  <button
+                    onClick={() => setCurrentPage('landing')}
+                    className="text-white hover:bg-black/20 px-3 py-2 rounded-lg transition-colors"
+                  >
+                    ← Zurück
+                  </button>
+
+                  <h2 className="text-white text-lg">{vitalDetails[selectedVital].name}</h2>
+
+                  <div className="w-6"></div>
+                </div>
+
+                {/* CONTENT */}
+                <div className="flex-1 overflow-y-auto px-6 py-5">
+                  {/* VALUE */}
+                  <div className="text-center mb-6">
+                    <div className="text-white text-6xl drop-shadow-lg">{vitalDetails[selectedVital].value}</div>
+                    <div className="text-slate-400 text-xl mt-2">{vitalDetails[selectedVital].unit}</div>
+                  </div>
+
+                  {/* GRAPH */}
+                  <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-5 mb-5 shadow-lg">
+                    <div className="h-36 relative">
+                      <svg width="100%" height="100%" viewBox="0 0 300 120" preserveAspectRatio="none">
+                        <polyline
+                          points={vitalDetails[selectedVital].graphData
+                            .map((y, x) => {
+                              const data = vitalDetails[selectedVital].graphData;
+                              const min = Math.min(...data);
+                              const max = Math.max(...data);
+                              const normalized = ((y - min) / (max - min || 1)) * 100;
+                              return `${x * 15},${120 - normalized}`;
+                            })
+                            .join(' ')}
+                          fill="none"
+                          stroke={
+                            vitalDetails[selectedVital].color === 'bg-red-500'
+                              ? '#ef4444'
+                              : vitalDetails[selectedVital].color === 'bg-green-500'
+                              ? '#22c55e'
+                              : vitalDetails[selectedVital].color === 'bg-orange-500'
+                              ? '#f97316'
+                              : '#3b82f6'
+                          }
+                          strokeWidth="3"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* INFO */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {vitalDetails[selectedVital].info.map((item, idx) => (
+                      <div key={idx} className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-4 shadow-lg">
+                        <div className="text-slate-400 text-xs mb-1">{item.label}</div>
+                        <div className="text-white">{item.value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+        </div>
+
+        {/* WATCH BAND */}
+        <div className="absolute -left-14 top-1/2 -translate-y-1/2 w-20 h-40 bg-gradient-to-l from-slate-700 to-slate-800 rounded-l-xl border-4 border-slate-600 shadow-xl"></div>
+        <div className="absolute -right-14 top-1/2 -translate-y-1/2 w-20 h-40 bg-gradient-to-r from-slate-700 to-slate-800 rounded-r-xl border-4 border-slate-600 shadow-xl"></div>
+      </div>
+    </div>
+  );
+}
