@@ -76,7 +76,24 @@
               </div>
 
             </div>
+              <div id="page-sos-countdown" class="page hidden flex flex-col items-center justify-center p-6 text-center">
 
+                  <div class="animate-pulse mb-6">
+                      <i data-lucide="siren" class="text-red-500 w-16 h-16"></i>
+                  </div>
+
+                  <h2 class="text-white text-2xl font-semibold mb-2">Alarm wird ausgelöst in</h2>
+
+                  <div id="sos-timer-display" class="text-7xl font-bold text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.6)] my-6">
+                      10
+                  </div>
+
+                  <p class="text-slate-400 text-sm mb-8">SOS wird gesendet...</p>
+
+                  <button id="sos-cancel-button" class="btn bg-slate-700 text-white border border-slate-500 hover:bg-slate-600">
+                      Abbrechen ✕
+                  </button>
+              </div>
             <!-- PAGE: EMERGENCY -->
             <div id="page-emergency" class="page hidden flex flex-col">
 
