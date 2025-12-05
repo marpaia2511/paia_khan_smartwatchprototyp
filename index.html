@@ -1,512 +1,175 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <title>Notfall Watch UI</title>
-  <!-- Tailwind via CDN -->
+  <meta charset="UTF-8">
+  <title>Watch Emergency UI</title>
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-8">
 
-  <div class="relative">
-    <!-- WATCH FRAME -->
-    <div class="w-[500px] h-[500px] bg-gradient-to-br from-slate-700 via-slate-600 to-slate-700 rounded-[50px] p-8 shadow-2xl border-8 border-slate-500/50 relative">
-      <!-- Realistic bezel highlights -->
-      <div class="absolute inset-0 rounded-[50px] bg-gradient-to-br from-white/10 via-transparent to-black/20 pointer-events-none"></div>
+<body class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 min-h-screen flex items-center justify-center p-4">
 
-      <!-- WATCH SCREEN -->
-      <div class="w-full h-full bg-black rounded-[40px] overflow-hidden relative shadow-[inset_0_2px_20px_rgba(0,0,0,0.8)] text-sm text-white">
-        <!-- LANDING PAGE -->
-        <div id="page-landing" class="h-full flex flex-col p-6">
-          <!-- TITLE -->
-          <div class="text-center mb-6 pt-2">
-            <h1 class="text-red-500 text-5xl tracking-wider drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]">
-              Notfall
-            </h1>
-            <div class="w-24 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent mx-auto mt-3"></div>
-          </div>
+  <div class="watch-container relative flex items-center justify-center">
 
-          <!-- SHARE BUTTON -->
-          <button
-            id="share-button"
-            class="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-500 text-white py-3 rounded-2xl transition-all shadow-lg hover:shadow-blue-500/50 text-base mb-3 flex items-center justify-center gap-2 relative overflow-hidden group"
-          >
-            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-            <i data-lucide="share-2" class="w-5 h-5"></i>
-            <span>Vitaldaten teilen</span>
-          </button>
+    <!-- Bands -->
+    <div class="band-left"></div>
+    <div class="band-right"></div>
 
-          <div
-            id="share-message"
-            class="hidden text-center text-emerald-400 bg-emerald-950/80 backdrop-blur-sm py-2 rounded-xl border border-emerald-500/50 shadow-lg shadow-emerald-500/20"
-          >
-            ✓ Vitaldaten geteilt
-          </div>
+    <!-- Body -->
+    <div class="watch-body relative">
+      <div class="watch-bezel"></div>
 
-          <!-- SOS BUTTON -->
-          <button
-            id="sos-button"
-            class="w-full bg-gradient-to-r from-red-500 via-red-600 to-red-500 text-white py-5 rounded-2xl transition-all shadow-lg shadow-red-500/30 hover:shadow-red-500/50 text-2xl tracking-wide mb-6 relative overflow-hidden group mt-3"
-          >
-            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-            <span class="relative">SOS</span>
-          </button>
+      <div class="watch-screen">
+        <div class="screen-content">
 
-          <!-- VITAL BUTTONS -->
-          <div class="grid grid-cols-2 gap-4 mt-2">
-            <!-- Herzfrequenz -->
-            <button
-              data-vital="heart"
-              class="vital-button bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border-2 border-red-500/30 hover:border-red-500/60 rounded-2xl p-5 flex flex-col items-center shadow-lg hover:shadow-red-500/20 transition-all relative overflow-hidden group"
-            >
-              <div class="absolute inset-0 bg-gradient-to-br from-red-500/0 to-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <i data-lucide="heart" class="w-11 h-11 text-red-500 mb-2 relative z-10"></i>
-              <div class="text-white text-sm relative z-10">Herzfrequenz</div>
-              <div class="text-red-400 text-3xl mt-2 relative z-10 drop-shadow-[0_0_10px_rgba(248,113,113,0.5)]">
-                142
+          <!-- PAGE WRAPPER -->
+          <div id="page-wrapper" class="w-full h-full relative">
+
+            <!-- PAGE: LANDING -->
+            <div id="page-landing" class="page landing flex flex-col items-center p-6">
+
+              <h1 class="text-red-400 text-5xl font-semibold mt-3 drop-shadow-[0_0_20px_rgba(255,0,0,0.45)] tracking-wide">
+                Notfall
+              </h1>
+              <div class="w-28 h-[3px] bg-red-500 rounded-full mt-1"></div>
+
+              <!-- Share -->
+              <button id="share-button"
+                class="btn share">
+                <i data-lucide="share-2" class="w-5 h-5"></i> Vitaldaten teilen
+                <span class="shine"></span>
+              </button>
+
+              <div id="share-toast"
+                class="toast hidden">
+                ✓ Vitaldaten wurde geteilt
               </div>
-              <div class="text-slate-400 text-xs relative z-10">bpm</div>
-            </button>
 
-            <!-- Sauerstoff -->
-            <button
-              data-vital="oxygen"
-              class="vital-button bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border-2 border-emerald-500/30 hover:border-emerald-500/60 rounded-2xl p-5 flex flex-col items-center shadow-lg hover:shadow-emerald-500/20 transition-all relative overflow-hidden group"
-            >
-              <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/0 to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <i data-lucide="wind" class="w-11 h-11 text-emerald-500 mb-2 relative z-10"></i>
-              <div class="text-white text-sm relative z-10">Sauerstoff</div>
-              <div class="text-emerald-400 text-3xl mt-2 relative z-10 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">
-                98
+              <!-- SOS -->
+              <button id="sos-button"
+                class="btn sos">
+                SOS
+                <span class="shine"></span>
+              </button>
+
+              <!-- Quick vitals -->
+              <div class="grid grid-cols-2 gap-4 mt-6">
+                <button data-vital="heart" class="vital-card border-red-500/50">
+                  <i data-lucide="heart" class="text-red-400 w-9 h-9"></i>
+                  <div class="text-xs text-slate-300">Herzfrequenz</div>
+                  <div class="text-3xl text-red-400 font-semibold">142</div>
+                  <div class="text-[11px] text-slate-400">bpm</div>
+                </button>
+
+                <button data-vital="oxygen" class="vital-card border-emerald-500/50">
+                  <i data-lucide="wind" class="text-emerald-400 w-9 h-9"></i>
+                  <div class="text-xs text-slate-300">Sauerstoff</div>
+                  <div class="text-3xl text-emerald-400 font-semibold">98</div>
+                  <div class="text-[11px] text-slate-400">%</div>
+                </button>
               </div>
-              <div class="text-slate-400 text-xs relative z-10">%</div>
-            </button>
-          </div>
-        </div>
 
-        <!-- EMERGENCY LIST PAGE -->
-        <div id="page-emergency-list" class="hidden h-full flex flex-col">
-          <!-- HEADER -->
-          <div class="bg-gradient-to-r from-red-500 via-red-600 to-red-500 px-6 py-5 flex items-center justify-between shadow-lg relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
+            </div>
 
-            <button
-              id="back-from-emergency"
-              class="text-white hover:bg-white/20 px-3 py-2 rounded-lg transition-all relative z-10 backdrop-blur-sm"
-            >
-              ← Zurück
-            </button>
+            <!-- PAGE: EMERGENCY -->
+            <div id="page-emergency" class="page hidden flex flex-col">
 
-            <h2 class="text-white relative z-10">Notfall-Status</h2>
+              <!-- Header -->
+              <div class="header red">
+                <button id="back-from-emergency" class="back-btn">← Zurück</button>
+                <h2 class="text-white text-sm">Notfall-Status</h2>
+                <div class="w-14"></div>
+              </div>
 
-            <div class="w-20"></div>
-          </div>
+              <div class="emergency-list p-5 space-y-4 overflow-y-auto">
 
-          <!-- LIST -->
-          <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
-            <!-- Sauerstoff -->
-            <div
-              class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm border-l-4 rounded-2xl p-5 flex items-center justify-between shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group"
-              style="border-left-color:#10b981;"
-            >
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                   style="background:linear-gradient(to right,#10b98110,transparent);"></div>
-
-              <div class="flex items-center gap-4 relative z-10">
-                <div
-                  class="w-12 h-12 rounded-xl flex items-center justify-center backdrop-blur-sm"
-                  style="background-color:#10b98120;"
-                >
-                  <i data-lucide="wind" class="w-6 h-6" style="color:#10b981;"></i>
+                <div class="em-row border-green-400" data-vital="oxygen">
+                  <i data-lucide="wind" class="text-emerald-400"></i>
+                  <span>Sauerstoff</span>
+                  <strong class="text-emerald-400">98%</strong>
                 </div>
-                <div>
-                  <div class="text-white">Sauerstoff</div>
-                  <div class="text-slate-400 text-sm mt-1">normal</div>
-                </div>
-              </div>
 
-              <div class="text-3xl relative z-10 text-emerald-400 drop-shadow-lg">
-                98%
+                <div class="em-row border-red-400" data-vital="heart">
+                  <i data-lucide="heart" class="text-red-400"></i>
+                  <span>Herzfrequenz</span>
+                  <strong class="text-red-400">142 bpm</strong>
+                </div>
+
+                <div class="em-row border-orange-400" data-vital="blood-pressure">
+                  <i data-lucide="activity" class="text-orange-400"></i>
+                  <span>Blutdruck</span>
+                  <strong class="text-orange-400">160/95</strong>
+                </div>
+
+                <div class="em-row border-blue-400" data-vital="temperature">
+                  <i data-lucide="thermometer" class="text-blue-400"></i>
+                  <span>Temperatur</span>
+                  <strong class="text-blue-400">36.8°C</strong>
+                </div>
+
               </div>
             </div>
 
-            <!-- Herzfrequenz -->
-            <div
-              class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm border-l-4 rounded-2xl p-5 flex items-center justify-between shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group"
-              style="border-left-color:#ef4444;"
-            >
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                   style="background:linear-gradient(to right,#ef444410,transparent);"></div>
+            <!-- PAGE: VITAL DETAIL -->
+            <div id="page-vital" class="page hidden flex flex-col">
 
-              <div class="flex items-center gap-4 relative z-10">
-                <div
-                  class="w-12 h-12 rounded-xl flex items-center justify-center backdrop-blur-sm"
-                  style="background-color:#ef444420;"
-                >
-                  <i data-lucide="heart" class="w-6 h-6" style="color:#ef4444;"></i>
-                </div>
-                <div>
-                  <div class="text-white">Herzfrequenz</div>
-                  <div class="text-slate-400 text-sm mt-1">kritisch</div>
-                </div>
+              <div id="vital-header" class="header red relative">
+                <button id="back-from-vital" class="back-btn">← Zurück</button>
+                <h2 id="vital-name" class="relative text-white text-sm">Vital</h2>
+                <div class="w-14"></div>
               </div>
 
-              <div class="text-3xl relative z-10 text-red-400 drop-shadow-lg">
-                142 bpm
+              <div class="flex-1 p-5 overflow-y-auto space-y-5">
+                <!-- Bubble -->
+                <div class="flex justify-center">
+                  <div id="vital-circle"
+                    class="value-circle border-red-500">
+                    <div id="vital-value"
+                      class="text-5xl font-bold text-white">--</div>
+                    <div id="vital-unit"
+                      class="text-xs text-slate-400">--</div>
+                  </div>
+                </div>
+
+                <!-- Graph -->
+                <div class="graph-card p-4">
+                  <svg id="vital-graph" width="100%" height="120" viewBox="0 0 300 120">
+                    <defs>
+                      <linearGradient id="graph-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop id="grad-1" offset="0%" stop-color="#ef4444" stop-opacity="0.4"/>
+                        <stop id="grad-2" offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+                      </linearGradient>
+                    </defs>
+
+                    <polygon id="graph-area" fill="url(#graph-grad)"></polygon>
+                    <polyline id="graph-line" fill="none" stroke="#ef4444" stroke-width="3"
+                      stroke-linecap="round" stroke-linejoin="round"></polyline>
+                  </svg>
+                </div>
+
+                <!-- Additional Info -->
+                <div id="vital-info"
+                  class="grid grid-cols-2 gap-3"></div>
               </div>
+
             </div>
 
-            <!-- Blutdruck -->
-            <div
-              class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm border-l-4 rounded-2xl p-5 flex items-center justify-between shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group"
-              style="border-left-color:#f97316;"
-            >
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                   style="background:linear-gradient(to right,#f9731610,transparent);"></div>
-
-              <div class="flex items-center gap-4 relative z-10">
-                <div
-                  class="w-12 h-12 rounded-xl flex items-center justify-center backdrop-blur-sm"
-                  style="background-color:#f9731620;"
-                >
-                  <i data-lucide="activity" class="w-6 h-6" style="color:#f97316;"></i>
-                </div>
-                <div>
-                  <div class="text-white">Blutdruck</div>
-                  <div class="text-slate-400 text-sm mt-1">erhöht</div>
-                </div>
-              </div>
-
-              <div class="text-3xl relative z-10 text-orange-400 drop-shadow-lg">
-                160/95
-              </div>
-            </div>
-
-            <!-- Temperatur -->
-            <div
-              class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm border-l-4 rounded-2xl p-5 flex items-center justify-between shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group"
-              style="border-left-color:#3b82f6;"
-            >
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                   style="background:linear-gradient(to right,#3b82f610,transparent);"></div>
-
-              <div class="flex items-center gap-4 relative z-10">
-                <div
-                  class="w-12 h-12 rounded-xl flex items-center justify-center backdrop-blur-sm"
-                  style="background-color:#3b82f620;"
-                >
-                  <i data-lucide="thermometer" class="w-6 h-6" style="color:#3b82f6;"></i>
-                </div>
-                <div>
-                  <div class="text-white">Temperatur</div>
-                  <div class="text-slate-400 text-sm mt-1">normal</div>
-                </div>
-              </div>
-
-              <div class="text-3xl relative z-10 text-blue-400 drop-shadow-lg">
-                36.8°C
-              </div>
-            </div>
-
-            <!-- Blutzucker -->
-            <div
-              class="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm border-l-4 rounded-2xl p-5 flex items-center justify-between shadow-xl hover:shadow-2xl transition-all relative overflow-hidden group"
-              style="border-left-color:#10b981;"
-            >
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                   style="background:linear-gradient(to right,#10b98110,transparent);"></div>
-
-              <div class="flex items-center gap-4 relative z-10">
-                <div
-                  class="w-12 h-12 rounded-xl flex items-center justify-center backdrop-blur-sm"
-                  style="background-color:#10b98120;"
-                >
-                  <i data-lucide="droplets" class="w-6 h-6" style="color:#10b981;"></i>
-                </div>
-                <div>
-                  <div class="text-white">Blutzucker</div>
-                  <div class="text-slate-400 text-sm mt-1">normal</div>
-                </div>
-              </div>
-
-              <div class="text-3xl relative z-10 text-emerald-400 drop-shadow-lg">
-                95 mg/dL
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- VITAL DETAIL PAGE -->
-        <div id="page-vital-detail" class="hidden h-full flex flex-col">
-          <!-- HEADER -->
-          <div
-            id="vital-header"
-            class="bg-gradient-to-r from-red-500 to-red-600 px-6 py-5 flex items-center justify-between shadow-lg relative overflow-hidden"
-          >
-            <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none"></div>
-
-            <button
-              id="back-from-vital"
-              class="text-white hover:bg-white/20 px-3 py-2 rounded-lg transition-all relative z-10 backdrop-blur-sm"
-            >
-              ← Zurück
-            </button>
-
-            <h2 id="vital-name" class="text-white relative z-10">Herzfrequenz</h2>
-
-            <div class="w-20"></div>
-          </div>
-
-          <!-- CONTENT -->
-          <div class="flex-1 overflow-y-auto px-6 py-5">
-            <!-- VALUE -->
-            <div class="text-center mb-6">
-              <div
-                id="vital-circle"
-                class="inline-flex items-center justify-center w-40 h-40 rounded-full bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm border-4 shadow-xl mb-4"
-                style="border-color:#ef444440;"
-              >
-                <div>
-                  <div id="vital-value" class="text-white text-5xl drop-shadow-lg">142</div>
-                  <div id="vital-unit" class="text-slate-400 mt-1">bpm</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- GRAPH -->
-            <div class="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl p-5 mb-5 shadow-xl border border-slate-700/50">
-              <div class="h-32 relative">
-                <svg id="vital-graph" width="100%" height="100%" viewBox="0 0 300 120" preserveAspectRatio="none">
-                  <!-- Grid lines -->
-                  <line x1="0" y1="30" x2="300" y2="30" stroke="#334155" stroke-width="0.5" opacity="0.3" />
-                  <line x1="0" y1="60" x2="300" y2="60" stroke="#334155" stroke-width="0.5" opacity="0.3" />
-                  <line x1="0" y1="90" x2="300" y2="90" stroke="#334155" stroke-width="0.5" opacity="0.3" />
-
-                  <defs>
-                    <linearGradient id="graph-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                      <stop id="graph-gradient-stop-1" offset="0%" stop-color="#ef4444" stop-opacity="0.3" />
-                      <stop id="graph-gradient-stop-2" offset="100%" stop-color="#ef4444" stop-opacity="0" />
-                    </linearGradient>
-                  </defs>
-
-                  <!-- Fill area -->
-                  <polygon id="graph-fill" points="" fill="url(#graph-gradient)"></polygon>
-
-                  <!-- Line -->
-                  <polyline
-                    id="graph-line"
-                    points=""
-                    fill="none"
-                    stroke="#ef4444"
-                    stroke-width="3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    style="filter:drop-shadow(0 0 4px rgba(255,255,255,0.3));"
-                  ></polyline>
-                </svg>
-              </div>
-            </div>
-
-            <!-- INFO -->
-            <div id="vital-info" class="grid grid-cols-2 gap-3">
-              <!-- Filled in by JS -->
-            </div>
           </div>
         </div>
       </div>
+
     </div>
 
-    <!-- WATCH BAND -->
-    <div class="absolute -left-14 top-1/2 -translate-y-1/2 w-20 h-40 bg-gradient-to-l from-slate-700 via-slate-600 to-slate-700 rounded-l-xl border-4 border-slate-500/50 shadow-2xl"></div>
-    <div class="absolute -right-14 top-1/2 -translate-y-1/2 w-20 h-40 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 rounded-r-xl border-4 border-slate-500/50 shadow-2xl"></div>
   </div>
 
-  <script>
-    const pages = {
-      landing: document.getElementById('page-landing'),
-      emergency: document.getElementById('page-emergency-list'),
-      vital: document.getElementById('page-vital-detail')
-    };
+  <script src="script.js"></script>
+  <script>lucide.createIcons();</script>
 
-    function showPage(name) {
-      pages.landing.classList.add('hidden');
-      pages.emergency.classList.add('hidden');
-      pages.vital.classList.add('hidden');
-      pages[name].classList.remove('hidden');
-    }
-
-    const shareButton = document.getElementById('share-button');
-    const shareMessage = document.getElementById('share-message');
-    const sosButton = document.getElementById('sos-button');
-    const backFromEmergency = document.getElementById('back-from-emergency');
-    const backFromVital = document.getElementById('back-from-vital');
-
-    shareButton.addEventListener('click', () => {
-      shareMessage.classList.remove('hidden');
-      setTimeout(() => shareMessage.classList.add('hidden'), 2000);
-    });
-
-    sosButton.addEventListener('click', () => showPage('emergency'));
-    backFromEmergency.addEventListener('click', () => showPage('landing'));
-    backFromVital.addEventListener('click', () => showPage('landing'));
-
-    const vitalDetails = {
-      heart: {
-        name: 'Herzfrequenz',
-        value: '142',
-        unit: 'bpm',
-        gradientClass: 'from-red-500 to-red-600',
-        graphColor: '#ef4444',
-        graphData: [72, 78, 82, 90, 105, 125, 135, 142, 140, 138, 145, 142, 140, 135, 130],
-        info: [
-          { label: 'Status', value: 'Erhöht', icon: 'trending-up', color: 'text-red-400' },
-          { label: 'Normal', value: '60-100 bpm', icon: 'activity' },
-          { label: 'Trend', value: 'Steigend', icon: 'trending-up', color: 'text-red-400' },
-          { label: 'Aktualisiert', value: 'vor 2 Min', icon: 'activity' }
-        ]
-      },
-      oxygen: {
-        name: 'Sauerstoff',
-        value: '98',
-        unit: '%',
-        gradientClass: 'from-emerald-500 to-green-600',
-        graphColor: '#10b981',
-        graphData: [95, 96, 97, 98, 99, 98, 98, 97, 98, 98, 98, 97, 98],
-        info: [
-          { label: 'Status', value: 'Normal', icon: 'minus', color: 'text-emerald-400' },
-          { label: 'Normal', value: '95-100%', icon: 'activity' },
-          { label: 'Trend', value: 'Stabil', icon: 'minus', color: 'text-emerald-400' },
-          { label: 'Aktualisiert', value: 'vor 1 Min', icon: 'activity' }
-        ]
-      },
-      'blood-pressure': {
-        name: 'Blutdruck',
-        value: '160/95',
-        unit: 'mmHg',
-        gradientClass: 'from-orange-500 to-orange-600',
-        graphColor: '#f97316',
-        graphData: [120, 125, 130, 140, 150, 155, 158, 160, 160, 162, 160],
-        info: [
-          { label: 'Status', value: 'Erhöht', icon: 'trending-up', color: 'text-orange-400' },
-          { label: 'Normal', value: '120/80', icon: 'activity' },
-          { label: 'Trend', value: 'Steigend', icon: 'trending-up', color: 'text-orange-400' },
-          { label: 'Aktualisiert', value: 'vor 3 Min', icon: 'activity' }
-        ]
-      },
-      temperature: {
-        name: 'Temperatur',
-        value: '36.8',
-        unit: '°C',
-        gradientClass: 'from-blue-500 to-blue-600',
-        graphColor: '#3b82f6',
-        graphData: [36.5, 36.6, 36.7, 36.8, 36.8, 36.9, 36.8, 36.8, 36.7],
-        info: [
-          { label: 'Status', value: 'Normal', icon: 'minus', color: 'text-blue-400' },
-          { label: 'Normal', value: '36.5-37.5°C', icon: 'thermometer' },
-          { label: 'Trend', value: 'Stabil', icon: 'minus', color: 'text-blue-400' },
-          { label: 'Aktualisiert', value: 'vor 5 Min', icon: 'activity' }
-        ]
-      }
-    };
-
-    const vitalHeader = document.getElementById('vital-header');
-    const vitalName = document.getElementById('vital-name');
-    const vitalValue = document.getElementById('vital-value');
-    const vitalUnit = document.getElementById('vital-unit');
-    const vitalCircle = document.getElementById('vital-circle');
-    const vitalInfoContainer = document.getElementById('vital-info');
-
-    const graphFill = document.getElementById('graph-fill');
-    const graphLine = document.getElementById('graph-line');
-    const graphGradientStop1 = document.getElementById('graph-gradient-stop-1');
-    const graphGradientStop2 = document.getElementById('graph-gradient-stop-2');
-
-    function buildGraphPoints(data) {
-      const min = Math.min(...data);
-      const max = Math.max(...data);
-      const points = data.map((y, idx) => {
-        const normalized = ((y - min) / (max - min || 1)) * 80 + 10;
-        const x = (idx / (data.length - 1)) * 300;
-        const ySvg = 120 - normalized;
-        return `${x},${ySvg}`;
-      });
-      const polygonPoints = `0,120 ${points.join(' ')} 300,120`;
-      return { polyline: points.join(' '), polygon: polygonPoints };
-    }
-
-    function renderVital(type) {
-      const v = vitalDetails[type];
-      vitalName.textContent = v.name;
-      vitalValue.textContent = v.value;
-      vitalUnit.textContent = v.unit;
-
-      // header gradient
-      vitalHeader.className =
-        'px-6 py-5 flex items-center justify-between shadow-lg relative overflow-hidden bg-gradient-to-r ' +
-        v.gradientClass;
-
-      // circle border
-      vitalCircle.style.borderColor = v.graphColor + '40';
-
-      // graph
-      graphLine.setAttribute('stroke', v.graphColor);
-      graphGradientStop1.setAttribute('stop-color', v.graphColor);
-      graphGradientStop2.setAttribute('stop-color', v.graphColor);
-
-      const { polyline, polygon } = buildGraphPoints(v.graphData);
-      graphLine.setAttribute('points', polyline);
-      graphFill.setAttribute('points', polygon);
-
-      // info cards
-      vitalInfoContainer.innerHTML = '';
-      v.info.forEach((item) => {
-        const card = document.createElement('div');
-        card.className =
-          'bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg border border-slate-700/30 hover:border-slate-600/50 transition-all';
-
-        const header = document.createElement('div');
-        header.className = 'flex items-center gap-2 mb-2';
-
-        const icon = document.createElement('i');
-        icon.setAttribute('data-lucide', item.icon);
-        icon.className = 'w-3 h-3 text-slate-500';
-
-        const label = document.createElement('div');
-        label.className = 'text-slate-400 text-xs';
-        label.textContent = item.label;
-
-        header.appendChild(icon);
-        header.appendChild(label);
-
-        const value = document.createElement('div');
-        value.className = item.color || 'text-white';
-        value.textContent = item.value;
-
-        card.appendChild(header);
-        card.appendChild(value);
-        vitalInfoContainer.appendChild(card);
-      });
-
-      // re-render Lucide icons inside this page
-      lucide.createIcons();
-    }
-
-    // Vital buttons on landing
-    document.querySelectorAll('.vital-button').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const type = btn.getAttribute('data-vital');
-        if (!type) return;
-        renderVital(type);
-        showPage('vital');
-      });
-    });
-
-    // Initial icons
-    document.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-    });
-  </script>
 </body>
 </html>
