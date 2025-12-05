@@ -1,7 +1,8 @@
 const pages = {
-  landing: document.getElementById("page-landing"),
-  emergency: document.getElementById("page-emergency"),
-  vital: document.getElementById("page-vital"),
+    landing: document.getElementById("page-landing"),
+    emergency: document.getElementById("page-emergency"),
+    vital: document.getElementById("page-vital"),
+    sosCountdown: document.getElementById("page-sos-countdown"),
 };
 
 function showPage(name) {
@@ -9,6 +10,43 @@ function showPage(name) {
   pages[name].classList.remove("hidden");
   lucide.createIcons();
 }
+
+let sosTimerInterval;
+
+const alarmAudio = new Audio("../sounds/sound.mp3");
+
+function startSosSequence() {
+    showPage("sosCountdown");
+
+    let timeLeft = 10;
+    const timerDisplay = document.getElementById("sos-timer-display");
+    timerDisplay.textContent = timeLeft;
+
+    alarmAudio.currentTime = 0;
+    alarmAudio.loop = true;
+    alarmAudio.play().catch(e => console.log("Audio Error:", e));
+
+    sosTimerInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(sosTimerInterval);
+            alarmAudio.pause();
+            alarmAudio.currentTime = 0;
+            showPage("emergency");
+        }
+    }, 1000);
+}
+
+function cancelSos() {
+    clearInterval(sosTimerInterval);
+    alarmAudio.pause();
+    alarmAudio.currentTime = 0;
+    showPage("landing");
+}
+
+document.getElementById("sos-cancel-button").addEventListener("click", cancelSos);
 
 // Toast
 document.getElementById("share-button").addEventListener("click", () => {
@@ -18,7 +56,7 @@ document.getElementById("share-button").addEventListener("click", () => {
 });
 
 // Navigation
-document.getElementById("sos-button").addEventListener("click", () => showPage("emergency"));
+document.getElementById("sos-button").addEventListener("click", () => startSosSequence());
 document.getElementById("back-from-emergency").addEventListener("click", () => showPage("landing"));
 document.getElementById("back-from-vital").addEventListener("click", () => showPage("landing"));
 
