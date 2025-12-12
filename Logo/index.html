@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SOS Emergency App</title>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body, #root {
+            height: 100%;
+            width: 100%;
+            overflow: hidden; /* keine Scrollbar */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes ping {
+            75%, 100% { transform: scale(2); opacity: 0; }
+        }
+        .animate-ping {
+            animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+    </style>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+    function App() {
+        return (
+            // Direkt Vollbild, ohne äußeren Wrapper/Padding
+            <div className="w-screen h-screen bg-gradient-to-br from-red-500 via-red-600 to-pink-600 shadow-2xl flex items-center justify-center relative overflow-hidden">
+                {/* Subtle background pattern */}
+                <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_30%_30%,white_0%,transparent_60%)]" />
+                </div>
+
+                {/* SOS Text with Heart */}
+                <div className="relative flex items-center justify-center gap-8">
+                    {/* Letter S */}
+                    <div className="text-white text-[16rem] font-black tracking-tight" style={{ textShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
+                        S
+                    </div>
+
+                    {/* Heart (replacing O) */}
+                    <div className="relative">
+                        <svg
+                            width="240"
+                            height="240"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="drop-shadow-2xl"
+                        >
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+                                fill="white"
+                                stroke="white"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+
+                        {/* Heartbeat line inside heart */}
+                        <svg
+                            width="140"
+                            height="70"
+                            viewBox="0 0 60 30"
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                        >
+                            <polyline
+                                points="0,15 15,15 18,8 22,22 26,15 60,15"
+                                fill="none"
+                                stroke="#ef4444"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </div>
+
+                    {/* Letter S */}
+                    <div className="text-white text-[16rem] font-black tracking-tight" style={{ textShadow: '0 8px 24px rgba(0,0,0,0.3)' }}>
+                        S
+                    </div>
+                </div>
+
+                {/* Pulse animation circle */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="w-96 h-96 rounded-full border-8 border-white/20 animate-ping" />
+                </div>
+            </div>
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+</script>
+</body>
+</html>
