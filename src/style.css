@@ -1,4 +1,4 @@
-/* Watch casing */
+/* Watch casing (Bleibt gleich, nur Screen ändert sich) */
 .watch-container {
     width: 520px;
     height: 620px;
@@ -8,9 +8,9 @@
 .watch-body {
     width: 500px;
     height: 580px;
-    background: radial-gradient(circle at 30% 30%, #4b5563 0%, #111827 50%);
+    background: #111827; /* Neutrales Dunkelgrau */
     border-radius: 60px;
-    box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
     position: relative;
 }
 
@@ -18,188 +18,143 @@
     position: absolute;
     inset: 0;
     border-radius: 60px;
-    border: 12px solid rgba(148,163,184,0.15);
-    background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(0,0,0,0.9));
+    border: 12px solid #334155;
     pointer-events: none;
     z-index: 50;
 }
 
-/* Display */
+/* Display - CLEAN & BLACK */
 .watch-screen {
     position: absolute;
     inset: 20px;
     border-radius: 50px;
-    box-shadow: inset 0 0 50px rgba(0,0,0,1);
     overflow: hidden;
-    background: #020617;
+    /* Dezenter Verlauf: Mitte dunkelgrau, Außen tiefschwarz */
+    background: radial-gradient(circle at center, #1e293b 0%, #020617 80%);
 }
 
 .screen-content {
     width: 100%;
     height: 100%;
-    border-radius: 50px;
-    background: #020617; /* Deepest Slate */
+    /* Muss transparent sein, damit der Verlauf von .watch-screen durchscheint */
+    background: transparent;
 }
 
 /* Bands */
-.band-left,
-.band-right {
+.band-left, .band-right {
     width: 85px;
     height: 330px;
     border-radius: 28px;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: linear-gradient(#1e293b, #0f172a);
-    border: 6px solid rgba(148,163,184,0.3);
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 20px 60px rgba(0,0,0,0.9);
+    background: #1e293b;
     z-index: -1;
 }
-
 .band-left { left: -76px; }
 .band-right { right: -76px; }
 
 /* PAGE General */
-.page {
-    width: 100%;
-    height: 100%;
-}
+.page { width: 100%; height: 100%; }
 
-/* Utilities */
+/* Scrollbar weg */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-/******** Buttons ********/
+/******** Buttons (Klarer und heller) ********/
 .btn {
     width: 100%;
-    padding: 15px;
-    border-radius: 28px;
+    padding: 16px;
+    border-radius: 12px; /* Etwas eckiger für "Tech"-Look */
     font-weight: 600;
     font-size: 16px;
-    margin-top: 18px;
-    transition: transform 0.1s ease;
+    margin-top: 16px;
     position: relative;
-    overflow: hidden;
     color: white;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: none; /* Kein Rand, reine Farbe */
 }
 
-.btn:active { transform: scale(0.97); }
+.btn:active { transform: scale(0.98); opacity: 0.9; }
 
 .btn.share {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    box-shadow: 0 10px 30px rgba(37,99,235,0.2);
+    background: #2563eb; /* Solides Blau */
 }
 
 .btn.sos {
-    background: linear-gradient(135deg, #dc2626, #991b1b);
-    box-shadow: 0 10px 35px rgba(220,38,38,0.3);
-    font-size: 22px;
-    letter-spacing: 1px;
+    background: #dc2626; /* Solides Rot */
+    font-size: 20px;
 }
 
-/* Subtler Shine */
-.shine {
-    position: absolute;
-    inset: 0;
-    transform: translateX(-100%);
-    background: linear-gradient(
-            120deg,
-            transparent 0%,
-            rgba(255,255,255,0.1) 50%, /* Reduced opacity significantly */
-            transparent 100%
-    );
-    transition: transform 0.6s ease;
-}
-
-button:hover .shine { transform: translateX(100%); }
+/* Shine Effekt (Optional, sehr subtil) */
+.shine { display: none; } /* Habe ich deaktiviert für Clean-Look */
 
 .toast {
-    margin-top: 14px;
-    background: rgba(6, 78, 59, 0.8);
-    border: 1px solid rgba(52, 211, 153, 0.3);
+    margin-top: 10px;
+    background: #064e3b;
     color: #34d399;
-    border-radius: 12px;
-    padding: 8px 16px;
+    border-radius: 8px;
+    padding: 8px 12px;
     font-size: 13px;
-    font-weight: 500;
+    text-align: center;
 }
 
-/******** Cards (Home) - Darker Backgrounds */
+/******** Cards (Home) - Hoher Kontrast */
 .vital-card {
     padding: 16px 12px;
-    border-radius: 24px;
-    background: rgba(15, 23, 42, 0.8); /* Darker slate */
+    border-radius: 16px;
+    background: #1e293b; /* Slate 800 - Solides Grau, keine Transparenz */
     text-align: center;
     cursor: pointer;
-    transition: 0.2s;
-    border-width: 1px;
+    border: 1px solid #334155; /* Sichtbarer Rand */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+.vital-card:active { background: #334155; }
 
-.vital-card:active {
-    transform: scale(0.96);
-    background: rgba(30, 41, 59, 1);
-}
-
-/******** Back Buttons (Glass Round) */
+/******** Back Buttons */
 .round-back-btn {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: rgba(30, 41, 59, 0.6);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: #1e293b;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #e2e8f0;
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.2s ease;
+    color: white;
+    border: 1px solid #475569;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
-
-.round-back-btn:active {
-    transform: scale(0.9);
-    background: rgba(30, 41, 59, 0.9);
-}
+.round-back-btn:active { background: #334155; }
 
 /******** Emergency List Cards */
 .vital-row-card {
     display: flex;
     align-items: center;
     gap: 16px;
-    background: rgba(15, 23, 42, 0.95); /* Nearly opaque dark */
-    padding: 18px;
-    border-radius: 26px;
-    border-width: 1px;
-    border-style: solid;
+    background: #1e293b; /* Solides Grau */
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid #334155;
     cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.vital-row-card:active {
-    transform: scale(0.98);
-    background: #1e293b;
+    margin-bottom: 10px;
 }
 
 .icon-box {
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: rgba(255,255,255,0.05); /* Nur leicht aufgehellt */
 }
 
 /******** Vital Detail */
 .detail-info-card {
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 20px;
-    padding: 16px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 14px;
+    padding: 14px;
 }

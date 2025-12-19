@@ -47,7 +47,6 @@ function cancelSos() {
 
 document.getElementById("sos-cancel-button").addEventListener("click", cancelSos);
 
-// Toast
 document.getElementById("share-button").addEventListener("click", () => {
     const toast = document.getElementById("share-toast");
     toast.classList.remove("hidden");
@@ -56,13 +55,10 @@ document.getElementById("share-button").addEventListener("click", () => {
 
 // Navigation
 document.getElementById("sos-button").addEventListener("click", () => startSosSequence());
-
-// BEIDE Back Buttons führen zur Homepage
 document.getElementById("back-from-emergency").addEventListener("click", () => showPage("landing"));
 document.getElementById("back-from-vital").addEventListener("click", () => showPage("landing"));
 
-
-// Vital Data Configuration
+// Vital Data
 const vitalDetails = {
     heart: {
         name: "Herzfrequenz",
@@ -70,10 +66,10 @@ const vitalDetails = {
         unit: "bpm",
         color: "#ef4444",
         info: [
-            { label: "Status", value: "Kritisch", color: "text-red-400", icon: "alert-circle" },
-            { label: "Bereich", value: "60-100", color: "text-slate-400", icon: "activity" },
-            { label: "Trend", value: "Steigend", color: "text-red-400", icon: "trending-up" },
-            { label: "Messung", value: "12:42", color: "text-slate-200", icon: "clock" },
+            { label: "Status", value: "Kritisch", color: "text-red-500", icon: "alert-circle" },
+            { label: "Bereich", value: "60-100", color: "text-gray-400", icon: "activity" },
+            { label: "Trend", value: "Steigend", color: "text-red-500", icon: "trending-up" },
+            { label: "Messung", value: "12:42", color: "text-white", icon: "clock" },
         ],
         graph: [72,85,95,110,130,142,138,145,140,135,130],
     },
@@ -83,10 +79,10 @@ const vitalDetails = {
         unit: "%",
         color: "#10b981",
         info: [
-            { label: "Status", value: "Normal", color: "text-emerald-400", icon: "check-circle" },
-            { label: "Bereich", value: "95-100%", color: "text-slate-400", icon: "activity" },
-            { label: "Trend", value: "Stabil", color: "text-emerald-400", icon: "minus" },
-            { label: "Messung", value: "12:42", color: "text-slate-200", icon: "clock" },
+            { label: "Status", value: "Normal", color: "text-emerald-500", icon: "check-circle" },
+            { label: "Bereich", value: "95-100%", color: "text-gray-400", icon: "activity" },
+            { label: "Trend", value: "Stabil", color: "text-emerald-500", icon: "minus" },
+            { label: "Messung", value: "12:42", color: "text-white", icon: "clock" },
         ],
         graph: [94,96,98,99,97,98,98,98],
     },
@@ -96,10 +92,10 @@ const vitalDetails = {
         unit: "mmHg",
         color: "#f97316",
         info: [
-            { label: "Status", value: "Erhöht", color: "text-orange-400", icon: "alert-triangle" },
-            { label: "Bereich", value: "120/80", color: "text-slate-400", icon: "activity" },
-            { label: "Trend", value: "+15%", color: "text-orange-400", icon: "trending-up" },
-            { label: "Messung", value: "12:38", color: "text-slate-200", icon: "clock" },
+            { label: "Status", value: "Erhöht", color: "text-orange-500", icon: "alert-triangle" },
+            { label: "Bereich", value: "120/80", color: "text-gray-400", icon: "activity" },
+            { label: "Trend", value: "+15%", color: "text-orange-500", icon: "trending-up" },
+            { label: "Messung", value: "12:38", color: "text-white", icon: "clock" },
         ],
         graph: [120,135,148,160,162,160,158],
     },
@@ -109,16 +105,15 @@ const vitalDetails = {
         unit: "°C",
         color: "#3b82f6",
         info: [
-            { label: "Status", value: "Normal", color: "text-blue-400", icon: "check-circle" },
-            { label: "Bereich", value: "36-37.5", color: "text-slate-400", icon: "thermometer" },
-            { label: "Trend", value: "Stabil", color: "text-blue-400", icon: "minus" },
-            { label: "Messung", value: "12:30", color: "text-slate-200", icon: "clock" },
+            { label: "Status", value: "Normal", color: "text-blue-500", icon: "check-circle" },
+            { label: "Bereich", value: "36-37.5", color: "text-gray-400", icon: "thermometer" },
+            { label: "Trend", value: "Stabil", color: "text-blue-500", icon: "minus" },
+            { label: "Messung", value: "12:30", color: "text-white", icon: "clock" },
         ],
         graph: [36.5,36.7,36.8,36.9,36.8,36.7],
     },
 };
 
-// Build graph
 function renderVital(type) {
     const data = vitalDetails[type];
 
@@ -129,8 +124,6 @@ function renderVital(type) {
     // Colors
     document.getElementById("vital-circle").style.borderColor = data.color;
     document.getElementById("vital-graph").style.color = data.color;
-    // Glow effect color
-    document.getElementById("vital-glow").style.backgroundColor = data.color;
 
     const min = Math.min(...data.graph);
     const max = Math.max(...data.graph);
@@ -142,7 +135,7 @@ function renderVital(type) {
     });
 
     document.getElementById("graph-line").setAttribute("points", points.join(" "));
-    document.getElementById("graph-area").setAttribute("points", `0,80 ${points.join(" ")} 300,80`);
+    // Area fill removed for cleaner look
 
     // Info cards
     const infoDiv = document.getElementById("vital-info");
@@ -150,8 +143,8 @@ function renderVital(type) {
     data.info.forEach(i => {
         infoDiv.innerHTML += `
       <div class="detail-info-card">
-        <div class="flex items-center gap-2 text-[10px] text-slate-500 mb-2 uppercase tracking-widest font-bold">
-          <i data-lucide="${i.icon}" class="w-3 h-3 opacity-60"></i>${i.label}
+        <div class="flex items-center gap-2 text-[10px] text-gray-400 mb-2 uppercase tracking-widest font-bold">
+          <i data-lucide="${i.icon}" class="w-3 h-3"></i>${i.label}
         </div>
         <div class="font-bold text-lg ${i.color}">${i.value}</div>
       </div>`;
