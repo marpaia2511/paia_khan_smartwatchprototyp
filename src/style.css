@@ -1,56 +1,59 @@
 /* Watch casing */
 .watch-container {
-  width: 520px;
-  height: 620px;
-  position: relative;
+    width: 520px;
+    height: 620px;
+    position: relative;
 }
 
 .watch-body {
-  width: 500px;
-  height: 580px;
-  background: radial-gradient(circle at 30% 30%, #4b5563 0%, #111827 50%);
-  border-radius: 60px;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.8);
-  position: relative;
+    width: 500px;
+    height: 580px;
+    background: radial-gradient(circle at 30% 30%, #4b5563 0%, #111827 50%);
+    border-radius: 60px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+    position: relative;
 }
 
 .watch-bezel {
-  position: absolute;
-  inset: 0;
-  border-radius: 60px;
-  border: 12px solid rgba(148,163,184,0.25);
-  background: linear-gradient(140deg, rgba(255,255,255,0.20), rgba(0,0,0,0.8));
-  pointer-events: none;
+    position: absolute;
+    inset: 0;
+    border-radius: 60px;
+    border: 12px solid rgba(148,163,184,0.15);
+    background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(0,0,0,0.9));
+    pointer-events: none;
+    z-index: 50;
 }
 
 /* Display */
 .watch-screen {
-  position: absolute;
-  inset: 20px;
-  border-radius: 50px;
-  box-shadow: inset 0 0 45px rgba(0,0,0,0.9);
-  overflow: hidden;
+    position: absolute;
+    inset: 20px;
+    border-radius: 50px;
+    box-shadow: inset 0 0 50px rgba(0,0,0,1);
+    overflow: hidden;
+    background: #020617;
 }
 
 .screen-content {
-  width: 100%;
-  height: 100%;
-  border-radius: 50px;
-  background: black;
+    width: 100%;
+    height: 100%;
+    border-radius: 50px;
+    background: #020617; /* Deepest Slate */
 }
 
 /* Bands */
 .band-left,
 .band-right {
-  width: 85px;
-  height: 330px;
-  border-radius: 28px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: linear-gradient(#1e293b, #0f172a);
-  border: 6px solid rgba(148,163,184,0.4);
-  box-shadow: inset 0 0 18px rgba(15,23,42,0.9), 0 18px 55px rgba(0,0,0,0.9);
+    width: 85px;
+    height: 330px;
+    border-radius: 28px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(#1e293b, #0f172a);
+    border: 6px solid rgba(148,163,184,0.3);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 20px 60px rgba(0,0,0,0.9);
+    z-index: -1;
 }
 
 .band-left { left: -76px; }
@@ -58,139 +61,145 @@
 
 /* PAGE General */
 .page {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
+
+/* Utilities */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 /******** Buttons ********/
 .btn {
-  width: 100%;
-  padding: 12px;
-  border-radius: 22px;
-  font-weight: 500;
-  font-size: 15px;
-  margin-top: 18px;
-  transition: 0.14s;
-  position: relative;
-  overflow: hidden;
-  color: white;
+    width: 100%;
+    padding: 15px;
+    border-radius: 28px;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 18px;
+    transition: transform 0.1s ease;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.05);
 }
 
+.btn:active { transform: scale(0.97); }
+
 .btn.share {
-  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
-  box-shadow: 0 16px 40px rgba(37,99,235,0.4);
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    box-shadow: 0 10px 30px rgba(37,99,235,0.2);
 }
 
 .btn.sos {
-  background: linear-gradient(90deg, #ef4444, #dc2626);
-  box-shadow: 0 16px 45px rgba(239,68,68,0.5);
-  font-size: 22px;
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    box-shadow: 0 10px 35px rgba(220,38,38,0.3);
+    font-size: 22px;
+    letter-spacing: 1px;
 }
 
+/* Subtler Shine */
 .shine {
-  position: absolute;
-  inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    rgba(255,255,255,0.35) 50%,
-    transparent 100%
-  );
-  transition: transform 0.7s ease;
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+            120deg,
+            transparent 0%,
+            rgba(255,255,255,0.1) 50%, /* Reduced opacity significantly */
+            transparent 100%
+    );
+    transition: transform 0.6s ease;
 }
 
-button:hover .shine {
-  transform: translateX(100%);
-}
+button:hover .shine { transform: translateX(100%); }
 
 .toast {
-  margin-top: 12px;
-  background: rgba(16,185,129,0.2);
-  border: 1px solid rgba(16,185,129,0.5);
-  color: #4ade80;
-  border-radius: 14px;
-  padding: 6px;
-  font-size: 13px;
+    margin-top: 14px;
+    background: rgba(6, 78, 59, 0.8);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: #34d399;
+    border-radius: 12px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
 }
 
-/******** Quick vitals */
+/******** Cards (Home) - Darker Backgrounds */
 .vital-card {
-  padding: 14px 6px;
-  border-radius: 16px;
-  background: rgba(30,41,59,0.65);
-  backdrop-filter: blur(16px);
-  text-align: center;
-  cursor: pointer;
-  transition: 0.15s;
+    padding: 16px 12px;
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.8); /* Darker slate */
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    border-width: 1px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.vital-card:hover {
-  transform: translateY(-2px);
+.vital-card:active {
+    transform: scale(0.96);
+    background: rgba(30, 41, 59, 1);
 }
 
-/******** Emergency rows */
-.em-row {
-  background: rgba(15,23,42,0.85);
-  padding: 12px 14px;
-  border-left-width: 4px;
-  border-radius: 14px;
-  box-shadow: 0 16px 35px rgba(0,0,0,0.75);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: 0.14s;
-  color: white;
-  font-size: 14px;
+/******** Back Buttons (Glass Round) */
+.round-back-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e2e8f0;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
-.em-row:hover {
-  transform: translateY(-2px);
+.round-back-btn:active {
+    transform: scale(0.9);
+    background: rgba(30, 41, 59, 0.9);
 }
 
-/******** Vital detail */
-.value-circle {
-  width: 155px;
-  height: 155px;
-  border-radius: 100%;
-  border-width: 4px;
-  border-style: solid;
-  background: linear-gradient(
-    135deg,
-    rgba(15,23,42,0.9),
-    rgba(2,6,23,0.9)
-  );
-  box-shadow: 0 18px 45px rgba(0,0,0,0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/******** Emergency List Cards */
+.vital-row-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(15, 23, 42, 0.95); /* Nearly opaque dark */
+    padding: 18px;
+    border-radius: 26px;
+    border-width: 1px;
+    border-style: solid;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.graph-card {
-  background: rgba(15,23,42,0.85);
-  border-radius: 20px;
-  border: 1px solid rgba(51,65,85,0.5);
+.vital-row-card:active {
+    transform: scale(0.98);
+    background: #1e293b;
 }
 
-/******** Headers */
-.header {
-  padding: 14px;
-  text-align: center;
-  font-weight: 600;
-  display: flex;
-  justify-content: space-between;
-  position: relative;
+.icon-box {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.header.red {
-  background: linear-gradient(90deg, #ef4444, #b91c1c);
-}
-
-.back-btn {
-  font-size: 12px;
-  background: rgba(255,255,255,0.15);
-  padding: 3px 8px;
-  border-radius: 8px;
-  color: white;
+/******** Vital Detail */
+.detail-info-card {
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 16px;
 }
