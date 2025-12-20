@@ -1,160 +1,173 @@
-/* Watch casing (Bleibt gleich, nur Screen ändert sich) */
-.watch-container {
-    width: 520px;
-    height: 620px;
+:root {
+    --ios-bg: #000000;
+    --ios-gray: #1c1c1e;
+    --ios-red: #ff3b30;
+    --ultra-titanium: #d1d1d6;
+}
+
+/* Container */
+.apple-watch-ultra-container {
+    width: 440px;
+    height: 600px;
     position: relative;
-}
-
-.watch-body {
-    width: 500px;
-    height: 580px;
-    background: #111827; /* Neutrales Dunkelgrau */
-    border-radius: 60px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-    position: relative;
-}
-
-.watch-bezel {
-    position: absolute;
-    inset: 0;
-    border-radius: 60px;
-    border: 12px solid #334155;
-    pointer-events: none;
-    z-index: 50;
-}
-
-/* Display - CLEAN & BLACK */
-.watch-screen {
-    position: absolute;
-    inset: 20px;
-    border-radius: 50px;
-    overflow: hidden;
-    /* Dezenter Verlauf: Mitte dunkelgrau, Außen tiefschwarz */
-    background: radial-gradient(circle at center, #1e293b 0%, #020617 80%);
-}
-
-.screen-content {
-    width: 100%;
-    height: 100%;
-    /* Muss transparent sein, damit der Verlauf von .watch-screen durchscheint */
-    background: transparent;
-}
-
-/* Bands */
-.band-left, .band-right {
-    width: 85px;
-    height: 330px;
-    border-radius: 28px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #1e293b;
-    z-index: -1;
-}
-.band-left { left: -76px; }
-.band-right { right: -76px; }
-
-/* PAGE General */
-.page { width: 100%; height: 100%; }
-
-/* Scrollbar weg */
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-
-/******** Buttons (Klarer und heller) ********/
-.btn {
-    width: 100%;
-    padding: 16px;
-    border-radius: 12px; /* Etwas eckiger für "Tech"-Look */
-    font-weight: 600;
-    font-size: 16px;
-    margin-top: 16px;
-    position: relative;
-    color: white;
-    border: none; /* Kein Rand, reine Farbe */
-}
-
-.btn:active { transform: scale(0.98); opacity: 0.9; }
-
-.btn.share {
-    background: #2563eb; /* Solides Blau */
-}
-
-.btn.sos {
-    background: #dc2626; /* Solides Rot */
-    font-size: 20px;
-}
-
-/* Shine Effekt (Optional, sehr subtil) */
-.shine { display: none; } /* Habe ich deaktiviert für Clean-Look */
-
-.toast {
-    margin-top: 10px;
-    background: #064e3b;
-    color: #34d399;
-    border-radius: 8px;
-    padding: 8px 12px;
-    font-size: 13px;
-    text-align: center;
-}
-
-/******** Cards (Home) - Hoher Kontrast */
-.vital-card {
-    padding: 16px 12px;
-    border-radius: 16px;
-    background: #1e293b; /* Slate 800 - Solides Grau, keine Transparenz */
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid #334155; /* Sichtbarer Rand */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
-.vital-card:active { background: #334155; }
 
-/******** Back Buttons */
-.round-back-btn {
-    width: 44px;
-    height: 44px;
+/* Armband */
+.band-top, .band-bottom {
+    width: 230px; height: 120px;
+    background: #e5e5ea;
+    position: absolute; z-index: 1;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+}
+.band-top { top: -60px; border-radius: 30px 30px 0 0; }
+.band-bottom { bottom: -60px; border-radius: 0 0 30px 30px; }
+
+.band-lug {
+    width: 180px; height: 10px;
+    background: #d1d1d6;
+    position: absolute; left: 50%; transform: translateX(-50%);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+.band-top .band-lug { bottom: 5px; }
+.band-bottom .band-lug { top: 5px; }
+
+/* Gehäuse */
+.watch-case {
+    width: 380px; height: 460px;
+    background: linear-gradient(135deg, #e1e1e1, #b0b0b0);
+    border-radius: 76px;
+    position: relative; z-index: 10;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.8);
+}
+
+/* BUTTONS */
+.side-left {
+    position: absolute; left: -10px; top: 50%; transform: translateY(-50%);
+    height: 160px;
+    display: flex; flex-direction: column;
+    justify-content: space-between; align-items: center;
+}
+.side-right {
+    position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+    height: 160px;
+    display: flex; flex-direction: column;
+    justify-content: space-between; align-items: flex-end; padding-right: 4px;
+}
+
+.action-button { width: 12px; height: 70px; background: #ff9500; border-radius: 6px; border: 1px solid rgba(0,0,0,0.1); }
+.speaker-grill span { display: block; width: 6px; height: 6px; background: #333; margin-bottom: 4px; border-radius: 50%; }
+
+.digital-crown { width: 26px; height: 56px; background: linear-gradient(#d1d1d6, #8e8e93); border-radius: 12px; position: relative; display: flex; align-items: center; justify-content: center; box-shadow: 3px 0 5px rgba(0,0,0,0.2); }
+.crown-ring { width: 14px; height: 14px; border: 2px solid #ff3b30; border-radius: 50%; }
+.crown-knurling { position: absolute; inset: 0; background: repeating-linear-gradient(transparent, transparent 2px, rgba(0,0,0,0.1) 3px); }
+
+.side-button { width: 8px; height: 80px; background: #b0b0b0; border-radius: 4px; margin-bottom: 10px; }
+
+/* Display */
+.display-bezel {
+    position: absolute; inset: 16px;
+    background: #000; border-radius: 60px;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 2px #111;
+}
+
+.watch-display {
+    width: 100%; height: 100%;
+    background: #000; position: relative;
+}
+
+.status-bar {
+    position: absolute; top: 0; left: 0; width: 100%;
+    padding: 16px 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* Page Setup */
+.page {
+    width: 100%; height: 100%;
+    background: #000;
+    position: absolute; top: 0; left: 0;
+    overflow: hidden;
+    padding-top: 40px;
+}
+
+.sub-page {
+    /* Click to switch */
+    cursor: pointer;
+}
+
+/* PAGINATION DOTS (Rechts am Rand) */
+.pagination-dots {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 50;
+}
+.pagination-dots.top-32 { top: 180px; transform: none; }
+
+.dot {
+    width: 6px; height: 6px;
+    background: #333;
     border-radius: 50%;
-    background: #1e293b;
+    transition: all 0.2s;
+}
+.dot.active {
+    background: #fff;
+    width: 8px; height: 8px;
+    box-shadow: 0 0 5px rgba(255,255,255,0.5);
+}
+
+/* CARDS */
+.vital-card-large {
+    background: #1c1c1e;
+    border-radius: 24px;
+    padding: 20px;
+    flex: 1;
+    border: 1px solid #333;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    color: white;
-    border: 1px solid #475569;
-    cursor: pointer;
-}
-.round-back-btn:active { background: #334155; }
-
-/******** Emergency List Cards */
-.vital-row-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: #1e293b; /* Solides Grau */
-    padding: 16px;
-    border-radius: 16px;
-    border: 1px solid #334155;
-    cursor: pointer;
-    margin-bottom: 10px;
 }
 
-.icon-box {
-    width: 42px;
-    height: 42px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.05); /* Nur leicht aufgehellt */
+.vital-card-row {
+    background: #1c1c1e;
+    border-radius: 20px;
+    padding: 18px;
+    border: 1px solid #333;
 }
 
-/******** Vital Detail */
-.detail-info-card {
-    background: #1e293b;
-    border: 1px solid #334155;
-    border-radius: 14px;
-    padding: 14px;
+.icon-circle {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
 }
+
+/* SOS Button */
+.sos-main-button {
+    width: 200px; height: 200px; /* Noch größer */
+    background: #ff3b30;
+    border-radius: 50%;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 50px rgba(255, 59, 48, 0.4);
+    transition: transform 0.1s;
+}
+.sos-main-button:active { transform: scale(0.95); }
+
+@keyframes pulse-slow {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.1); opacity: 0.1; }
+}
+.animate-pulse-slow { animation: pulse-slow 3s infinite; }
+
+#countdown-progress { transition: stroke-dashoffset 1s linear; }

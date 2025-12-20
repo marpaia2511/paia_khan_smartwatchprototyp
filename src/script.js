@@ -1,164 +1,143 @@
+// Konfiguration
+const SOS_TIME_SECONDS = 7;
+const CIRCUMFERENCE = 603; // r=96
+
+// Elemente
 const pages = {
-    landing: document.getElementById("page-landing"),
-    emergency: document.getElementById("page-emergency"),
-    vital: document.getElementById("page-vital"),
-    sosCountdown: document.getElementById("page-sos-countdown"),
+    monitoring: document.getElementById('page-monitoring'),
+    vitalsView: document.getElementById('page-vitals-view'),
+    countdown: document.getElementById('page-countdown'),
+    alarmActive: document.getElementById('page-alarm-active')
 };
 
-function showPage(name) {
-    Object.values(pages).forEach(p => p.classList.add("hidden"));
-    pages[name].classList.remove("hidden");
+// Vitals Sub-Pages
+const vitalsP1 = document.getElementById('vitals-p1');
+const vitalsP2 = document.getElementById('vitals-p2');
+const vitalsDot1 = document.getElementById('vitals-dot-1');
+const vitalsDot2 = document.getElementById('vitals-dot-2');
+
+// Alarm Sub-Pages
+const alarmP1 = document.getElementById('alarm-p1');
+const alarmP2 = document.getElementById('alarm-p2');
+const alarmDot1 = document.getElementById('alarm-dot-1');
+const alarmDot2 = document.getElementById('alarm-dot-2');
+
+
+const countdownDisplay = document.getElementById('countdown-display');
+const progressCircle = document.getElementById('countdown-progress');
+const bpmDisplayHome = document.getElementById('live-bpm-display');
+const bpmDisplayEmerg = document.getElementById('emerg-bpm');
+
+let countdownInterval;
+
+function showPage(pageKey) {
+    Object.values(pages).forEach(el => el.classList.add('hidden'));
+    pages[pageKey].classList.remove('hidden');
+
+    // Reset Vitals View to Page 1
+    if(pageKey === 'vitalsView') toggleVitalsPage(1);
+    // Reset Alarm View to Page 1
+    if(pageKey === 'alarmActive') toggleAlarmPage(1);
+
     lucide.createIcons();
 }
 
-let sosTimerInterval;
-const alarmAudio = new Audio("../sounds/sound.mp3");
+// === TOGGLE LOGIK (SIMULIERTES WISCHEN) ===
 
-function startSosSequence() {
-    showPage("sosCountdown");
+function toggleVitalsPage(pageNum) {
+    if(pageNum === 1) {
+        vitalsP1.classList.remove('hidden');
+        vitalsP2.classList.add('hidden');
+        vitalsDot1.classList.add('active');
+        vitalsDot2.classList.remove('active');
+    } else {
+        vitalsP1.classList.add('hidden');
+        vitalsP2.classList.remove('hidden');
+        vitalsDot1.classList.remove('active');
+        vitalsDot2.classList.add('active');
+    }
+}
 
-    let timeLeft = 10;
-    const timerDisplay = document.getElementById("sos-timer-display");
-    timerDisplay.textContent = timeLeft;
+// Klick auf den Inhalt wechselt Seite
+vitalsP1.addEventListener('click', () => toggleVitalsPage(2));
+vitalsP2.addEventListener('click', () => toggleVitalsPage(1));
 
-    alarmAudio.currentTime = 0;
-    alarmAudio.loop = true;
-    alarmAudio.play().catch(e => console.log("Audio Error:", e));
 
-    sosTimerInterval = setInterval(() => {
+function toggleAlarmPage(pageNum) {
+    if(pageNum === 1) {
+        alarmP1.classList.remove('hidden');
+        alarmP2.classList.add('hidden');
+        alarmDot1.classList.add('active');
+        alarmDot2.classList.remove('active');
+    } else {
+        alarmP1.classList.add('hidden');
+        alarmP2.classList.remove('hidden');
+        alarmDot1.classList.remove('active');
+        alarmDot2.classList.add('active');
+    }
+}
+
+alarmP1.addEventListener('click', () => toggleAlarmPage(2));
+alarmP2.addEventListener('click', () => toggleAlarmPage(1));
+
+
+// === NAVIGATION ===
+document.getElementById('show-vitals-btn').addEventListener('click', () => {
+    showPage('vitalsView');
+});
+document.getElementById('back-to-home-btn').addEventListener('click', () => {
+    showPage('monitoring');
+});
+
+// === SOS LOGIK ===
+document.getElementById('trigger-sos-btn').addEventListener('click', () => {
+    startCountdown();
+});
+
+function startCountdown() {
+    showPage('countdown');
+    let timeLeft = SOS_TIME_SECONDS;
+    countdownDisplay.textContent = timeLeft;
+
+    progressCircle.style.transition = 'none';
+    progressCircle.style.strokeDashoffset = 0;
+    progressCircle.getBoundingClientRect();
+    progressCircle.style.transition = 'stroke-dashoffset 1s linear';
+
+    countdownInterval = setInterval(() => {
         timeLeft--;
-        timerDisplay.textContent = timeLeft;
+        countdownDisplay.textContent = timeLeft;
+        const offset = CIRCUMFERENCE - ((timeLeft / SOS_TIME_SECONDS) * CIRCUMFERENCE);
+        progressCircle.style.strokeDashoffset = offset;
 
         if (timeLeft <= 0) {
-            clearInterval(sosTimerInterval);
-            alarmAudio.pause();
-            alarmAudio.currentTime = 0;
-            showPage("emergency");
+            clearInterval(countdownInterval);
+            triggerAlarm();
         }
     }, 1000);
 }
 
-function cancelSos() {
-    clearInterval(sosTimerInterval);
-    alarmAudio.pause();
-    alarmAudio.currentTime = 0;
-    showPage("landing");
-}
-
-document.getElementById("sos-cancel-button").addEventListener("click", cancelSos);
-
-document.getElementById("share-button").addEventListener("click", () => {
-    const toast = document.getElementById("share-toast");
-    toast.classList.remove("hidden");
-    setTimeout(() => toast.classList.add("hidden"), 2000);
+document.getElementById('cancel-sos-btn').addEventListener('click', () => {
+    clearInterval(countdownInterval);
+    showPage('monitoring');
 });
 
-// Navigation
-document.getElementById("sos-button").addEventListener("click", () => startSosSequence());
-document.getElementById("back-from-emergency").addEventListener("click", () => showPage("landing"));
-document.getElementById("back-from-vital").addEventListener("click", () => showPage("landing"));
-
-// Vital Data
-const vitalDetails = {
-    heart: {
-        name: "Herzfrequenz",
-        value: "142",
-        unit: "bpm",
-        color: "#ef4444",
-        info: [
-            { label: "Status", value: "Kritisch", color: "text-red-500", icon: "alert-circle" },
-            { label: "Bereich", value: "60-100", color: "text-gray-400", icon: "activity" },
-            { label: "Trend", value: "Steigend", color: "text-red-500", icon: "trending-up" },
-            { label: "Messung", value: "12:42", color: "text-white", icon: "clock" },
-        ],
-        graph: [72,85,95,110,130,142,138,145,140,135,130],
-    },
-    oxygen: {
-        name: "Sauerstoff",
-        value: "98",
-        unit: "%",
-        color: "#10b981",
-        info: [
-            { label: "Status", value: "Normal", color: "text-emerald-500", icon: "check-circle" },
-            { label: "Bereich", value: "95-100%", color: "text-gray-400", icon: "activity" },
-            { label: "Trend", value: "Stabil", color: "text-emerald-500", icon: "minus" },
-            { label: "Messung", value: "12:42", color: "text-white", icon: "clock" },
-        ],
-        graph: [94,96,98,99,97,98,98,98],
-    },
-    "blood-pressure": {
-        name: "Blutdruck",
-        value: "160/95",
-        unit: "mmHg",
-        color: "#f97316",
-        info: [
-            { label: "Status", value: "Erhöht", color: "text-orange-500", icon: "alert-triangle" },
-            { label: "Bereich", value: "120/80", color: "text-gray-400", icon: "activity" },
-            { label: "Trend", value: "+15%", color: "text-orange-500", icon: "trending-up" },
-            { label: "Messung", value: "12:38", color: "text-white", icon: "clock" },
-        ],
-        graph: [120,135,148,160,162,160,158],
-    },
-    temperature: {
-        name: "Temperatur",
-        value: "36.8",
-        unit: "°C",
-        color: "#3b82f6",
-        info: [
-            { label: "Status", value: "Normal", color: "text-blue-500", icon: "check-circle" },
-            { label: "Bereich", value: "36-37.5", color: "text-gray-400", icon: "thermometer" },
-            { label: "Trend", value: "Stabil", color: "text-blue-500", icon: "minus" },
-            { label: "Messung", value: "12:30", color: "text-white", icon: "clock" },
-        ],
-        graph: [36.5,36.7,36.8,36.9,36.8,36.7],
-    },
-};
-
-function renderVital(type) {
-    const data = vitalDetails[type];
-
-    document.getElementById("vital-name").textContent = data.name;
-    document.getElementById("vital-value").textContent = data.value;
-    document.getElementById("vital-unit").textContent = data.unit;
-
-    // Colors
-    document.getElementById("vital-circle").style.borderColor = data.color;
-    document.getElementById("vital-graph").style.color = data.color;
-
-    const min = Math.min(...data.graph);
-    const max = Math.max(...data.graph);
-
-    const points = data.graph.map((v, i) => {
-        const x = (300 / (data.graph.length - 1)) * i;
-        const y = 80 - ((v - min) / (max - min || 1)) * 60 - 10;
-        return `${x},${y}`;
-    });
-
-    document.getElementById("graph-line").setAttribute("points", points.join(" "));
-    // Area fill removed for cleaner look
-
-    // Info cards
-    const infoDiv = document.getElementById("vital-info");
-    infoDiv.innerHTML = "";
-    data.info.forEach(i => {
-        infoDiv.innerHTML += `
-      <div class="detail-info-card">
-        <div class="flex items-center gap-2 text-[10px] text-gray-400 mb-2 uppercase tracking-widest font-bold">
-          <i data-lucide="${i.icon}" class="w-3 h-3"></i>${i.label}
-        </div>
-        <div class="font-bold text-lg ${i.color}">${i.value}</div>
-      </div>`;
-    });
-
-    lucide.createIcons();
-    showPage("vital");
+function triggerAlarm() {
+    showPage('alarmActive');
 }
 
-document.querySelectorAll(".vital-card, .vital-row-card").forEach(el => {
-    el.addEventListener("click", () => renderVital(el.dataset.vital));
-});
+// === VITALWERT SIMULATION ===
+function simulateVitals() {
+    setInterval(() => {
+        const normalBpm = Math.floor(Math.random() * (85 - 80 + 1) + 80);
+        const stressBpm = Math.floor(Math.random() * (150 - 140 + 1) + 140);
+        if(bpmDisplayHome) bpmDisplayHome.textContent = normalBpm;
+        if(bpmDisplayEmerg) bpmDisplayEmerg.textContent = stressBpm;
+    }, 2000);
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     lucide.createIcons();
-    showPage("landing");
+    showPage('monitoring');
+    simulateVitals();
 });
