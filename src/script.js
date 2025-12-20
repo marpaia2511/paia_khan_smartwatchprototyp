@@ -1,8 +1,7 @@
 // Konfiguration
 const SOS_TIME_SECONDS = 7;
-const CIRCUMFERENCE = 603; // r=96
+const CIRCUMFERENCE = 603;
 
-// Elemente
 const pages = {
     monitoring: document.getElementById('page-monitoring'),
     vitalsView: document.getElementById('page-vitals-view'),
@@ -10,18 +9,23 @@ const pages = {
     alarmActive: document.getElementById('page-alarm-active')
 };
 
-// Vitals Sub-Pages
+// Vitals Pages
 const vitalsP1 = document.getElementById('vitals-p1');
 const vitalsP2 = document.getElementById('vitals-p2');
-const vitalsDot1 = document.getElementById('vitals-dot-1');
-const vitalsDot2 = document.getElementById('vitals-dot-2');
+const vitalsP3 = document.getElementById('vitals-p3');
+const vitalsDots = [
+    document.getElementById('vitals-dot-1'),
+    document.getElementById('vitals-dot-2'),
+    document.getElementById('vitals-dot-3')
+];
 
-// Alarm Sub-Pages
+// Alarm Pages
 const alarmP1 = document.getElementById('alarm-p1');
 const alarmP2 = document.getElementById('alarm-p2');
-const alarmDot1 = document.getElementById('alarm-dot-1');
-const alarmDot2 = document.getElementById('alarm-dot-2');
-
+const alarmDots = [
+    document.getElementById('alarm-dot-1'),
+    document.getElementById('alarm-dot-2')
+];
 
 const countdownDisplay = document.getElementById('countdown-display');
 const progressCircle = document.getElementById('countdown-progress');
@@ -34,46 +38,51 @@ function showPage(pageKey) {
     Object.values(pages).forEach(el => el.classList.add('hidden'));
     pages[pageKey].classList.remove('hidden');
 
-    // Reset Vitals View to Page 1
     if(pageKey === 'vitalsView') toggleVitalsPage(1);
-    // Reset Alarm View to Page 1
     if(pageKey === 'alarmActive') toggleAlarmPage(1);
 
     lucide.createIcons();
 }
 
-// === TOGGLE LOGIK (SIMULIERTES WISCHEN) ===
-
+// === TOGGLE VITAL PAGES (1 -> 2 -> 3 -> 1) ===
 function toggleVitalsPage(pageNum) {
+    // Hide all
+    vitalsP1.classList.add('hidden');
+    vitalsP2.classList.add('hidden');
+    vitalsP3.classList.add('hidden');
+    vitalsDots.forEach(d => d.classList.remove('active'));
+
+    // Show current
     if(pageNum === 1) {
         vitalsP1.classList.remove('hidden');
-        vitalsP2.classList.add('hidden');
-        vitalsDot1.classList.add('active');
-        vitalsDot2.classList.remove('active');
-    } else {
-        vitalsP1.classList.add('hidden');
+        vitalsDots[0].classList.add('active');
+    } else if (pageNum === 2) {
         vitalsP2.classList.remove('hidden');
-        vitalsDot1.classList.remove('active');
-        vitalsDot2.classList.add('active');
+        vitalsDots[1].classList.add('active');
+    } else {
+        vitalsP3.classList.remove('hidden');
+        vitalsDots[2].classList.add('active');
     }
 }
 
-// Klick auf den Inhalt wechselt Seite
+// Click Events to cycle
 vitalsP1.addEventListener('click', () => toggleVitalsPage(2));
-vitalsP2.addEventListener('click', () => toggleVitalsPage(1));
+vitalsP2.addEventListener('click', () => toggleVitalsPage(3));
+vitalsP3.addEventListener('click', () => toggleVitalsPage(1));
 
 
+// === TOGGLE ALARM PAGES (1 -> 2 -> 1) ===
 function toggleAlarmPage(pageNum) {
     if(pageNum === 1) {
         alarmP1.classList.remove('hidden');
         alarmP2.classList.add('hidden');
-        alarmDot1.classList.add('active');
-        alarmDot2.classList.remove('active');
+        alarmDots[0].classList.add('active');
+        alarmDots[1].classList.remove('active');
     } else {
         alarmP1.classList.add('hidden');
         alarmP2.classList.remove('hidden');
-        alarmDot1.classList.remove('active');
-        alarmDot2.classList.add('active');
+        alarmDots[0].classList.remove('active');
+        alarmDots[1].classList.add('active');
     }
 }
 
@@ -82,17 +91,9 @@ alarmP2.addEventListener('click', () => toggleAlarmPage(1));
 
 
 // === NAVIGATION ===
-document.getElementById('show-vitals-btn').addEventListener('click', () => {
-    showPage('vitalsView');
-});
-document.getElementById('back-to-home-btn').addEventListener('click', () => {
-    showPage('monitoring');
-});
-
-// === SOS LOGIK ===
-document.getElementById('trigger-sos-btn').addEventListener('click', () => {
-    startCountdown();
-});
+document.getElementById('show-vitals-btn').addEventListener('click', () => showPage('vitalsView'));
+document.getElementById('back-to-home-btn').addEventListener('click', () => showPage('monitoring'));
+document.getElementById('trigger-sos-btn').addEventListener('click', startCountdown);
 
 function startCountdown() {
     showPage('countdown');
@@ -126,7 +127,7 @@ function triggerAlarm() {
     showPage('alarmActive');
 }
 
-// === VITALWERT SIMULATION ===
+// Vital Simulation
 function simulateVitals() {
     setInterval(() => {
         const normalBpm = Math.floor(Math.random() * (85 - 80 + 1) + 80);
